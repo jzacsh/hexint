@@ -1,0 +1,5 @@
+= hex to int conversions
+
+i'm convinced i shouldn't have written this, but 6+ minutes of searching the web
+for golang solution was too much. my searching-foo is awful, so here i've
+written this from scratch.
