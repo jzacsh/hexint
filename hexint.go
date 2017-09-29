@@ -32,7 +32,7 @@ func DecodeInt(hex byte) (int, error) {
 	if val == -1 {
 		return -1, fmt.Errorf("invalid hex, got: '%c'", runePoint)
 	}
-	return val, nil // TODO(zacsh) finish converting to int [0,15]
+	return val, nil
 }
 
 func decodeInt(rn rune) int {
