@@ -4,7 +4,7 @@ import "fmt"
 
 func IsValidHex(rn byte) bool {
 	_, e := ParseInt(rn)
-	return e != nil
+	return e == nil
 }
 
 func MustParseInt(hex byte) int {
