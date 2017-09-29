@@ -14,7 +14,7 @@ var tt = []struct {
 func Test_IsValidHex(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(string(tc.Given), func(it *testing.T) {
-			isValid := IsValidHex(tc.Given)
+			isValid := IsHex(tc.Given)
 			if isValid != tc.IsValid {
 				validity := "in"
 				if tc.IsValid {

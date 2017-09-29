@@ -2,7 +2,7 @@ package hexint
 
 import "fmt"
 
-func IsValidHex(rn byte) bool {
+func IsHex(rn byte) bool {
 	_, e := DecodeInt(rn)
 	return e == nil
 }
