@@ -3,12 +3,12 @@ package hexint
 import "fmt"
 
 func IsValidHex(rn byte) bool {
-	_, e := ParseInt(rn)
+	_, e := DecodeInt(rn)
 	return e == nil
 }
 
-func MustParseInt(hex byte) int {
-	resp, e := ParseInt(hex)
+func MustDecodeInt(hex byte) int {
+	resp, e := DecodeInt(hex)
 	if e != nil {
 		panic(e)
 	}
@@ -16,7 +16,7 @@ func MustParseInt(hex byte) int {
 }
 
 // Given a hex char, returns its corresponding integer: a value in [0,15]
-func ParseInt(hex byte) (int, error) {
+func DecodeInt(hex byte) (int, error) {
 	// Char-to-rune table:
 	//
 	// | char    code point
@@ -26,14 +26,14 @@ func ParseInt(hex byte) (int, error) {
 	// | [a,f] = [97,102]
 
 	runePoint := rune(hex)
-	val := parseInt(runePoint)
+	val := decodeInt(runePoint)
 	if val == -1 {
 		return -1, fmt.Errorf("invalid hex, got: '%c'", runePoint)
 	}
 	return val, nil // TODO(zacsh) finish converting to int [0,15]
 }
 
-func parseInt(rn rune) int {
+func decodeInt(rn rune) int {
 	switch {
 	case (rn >= 48 && rn <= 57): /*[0,9]*/
 		return int(rn) - 48
