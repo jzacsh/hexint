@@ -43,7 +43,6 @@ func decodeInt(rn rune) int {
 		return int(rn) - 65 + 10
 	case (rn >= 97 && rn <= 102): /*[a,f]*/
 		return int(rn) - 97 + 10
-		// TODO(zacsh): cannot comma-case these last two cases?
 	default:
 		return -1
 	}
