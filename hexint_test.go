@@ -7,8 +7,14 @@ var tt = []struct {
 	Expect  int
 	IsValid bool
 }{
-	{'0', 0, true},
-	// TODO(zacsh) fill out rest of typical cases
+	{'0', 0, true}, {'1', 1, true}, {'2', 2, true}, {'3', 3, true}, {'4', 4, true},
+	{'5', 5, true}, {'6', 6, true}, {'7', 7, true}, {'8', 8, true}, {'9', 9, true},
+	{'A', 10, true}, {'B', 11, true}, {'C', 12, true}, {'D', 13, true},
+	{'E', 14, true}, {'F', 15, true},
+	{'a', 10, true}, {'b', 11, true}, {'c', 12, true}, {'d', 13, true},
+	{'e', 14, true}, {'f', 15, true},
+
+	{'x', -1, false}, {' ', -1, false}, {'g', -1, false},
 }
 
 func Test_IsValidHex(t *testing.T) {
