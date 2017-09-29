@@ -3,9 +3,9 @@ package hexint
 import "testing"
 
 var tt = []struct {
-	Given   byte
-	Expect  int
-	IsValid bool
+	Given  byte
+	Expect int
+	IsHex  bool
 }{
 	{'0', 0, true}, {'1', 1, true}, {'2', 2, true}, {'3', 3, true}, {'4', 4, true},
 	{'5', 5, true}, {'6', 6, true}, {'7', 7, true}, {'8', 8, true}, {'9', 9, true},
@@ -17,27 +17,62 @@ var tt = []struct {
 	{'x', -1, false}, {' ', -1, false}, {'g', -1, false},
 }
 
-func Test_IsValidHex(t *testing.T) {
+func Test_IsHex(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(string(tc.Given), func(it *testing.T) {
-			isValid := IsHex(tc.Given)
-			if isValid == tc.IsValid {
+			isHex := IsHex(tc.Given)
+			if isHex == tc.IsHex {
 				return
 			}
 
 			validity := "in"
-			if tc.IsValid {
+			if tc.IsHex {
 				validity = ""
 			}
-			it.Fatalf("expected '%c' to be %svalid", tc.Given, validity)
+			it.Fatalf("expected '%c' to be %svalid hex", tc.Given, validity)
 		})
 	}
 }
 
-func Test_MustParseInt(t *testing.T) {
-	t.Fatalf("not yet tested") // TODO(zacsh)
+func Test_DecodeInt(t *testing.T) {
+	for _, tc := range tt {
+		t.Run(string(tc.Given), func(it *testing.T) {
+			zint, e := DecodeInt(tc.Given)
+			isHex := e == nil
+			if tc.IsHex != isHex {
+				validity := "in"
+				if tc.IsHex {
+					validity = ""
+				}
+				it.Fatalf("expected '%c' to be %svalid hex", tc.Given, validity)
+			}
+
+			if zint == tc.Expect {
+				return
+			}
+			it.Fatalf("expected '%c' to decode to %d, but got %d", tc.Given, tc.Expect, zint)
+		})
+	}
 }
 
-func Test_ParseInt(t *testing.T) {
-	t.Fatalf("not yet tested") // TODO(zacsh)
+func Test_MustDecodeInt(t *testing.T) {
+	for _, tc := range tt {
+		t.Run(string(tc.Given), func(it *testing.T) {
+			defer func() {
+				r := recover()
+				wasPanicless := r == nil
+				if tc.IsHex == wasPanicless {
+					return
+				}
+				it.Fatalf("expected panic for '%c', but got non", tc.Given)
+			}()
+
+			zint := MustDecodeInt(tc.Given)
+
+			if zint == tc.Expect {
+				return
+			}
+			it.Fatalf("expected '%c' to decode to %d, but got %d", tc.Given, tc.Expect, zint)
+		})
+	}
 }
