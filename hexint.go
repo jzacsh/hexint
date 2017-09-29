@@ -2,11 +2,14 @@ package hexint
 
 import "fmt"
 
+// IsHex determines if the given rune, `rn` is a hex character that can be
+// decoded by `DecodeInt`.
 func IsHex(rn byte) bool {
 	_, e := DecodeInt(rn)
 	return e == nil
 }
 
+// MustDecodeInt thin panic-wrapper for DecodeInt().
 func MustDecodeInt(hex byte) int {
 	resp, e := DecodeInt(hex)
 	if e != nil {
@@ -15,16 +18,15 @@ func MustDecodeInt(hex byte) int {
 	return resp
 }
 
-// Given a hex char, returns its corresponding integer: a value in [0,15]
+// DecodeInt returns an integer in [0,15] given `hex` byte as extracted from a
+// string, case-insensitive. Specifically, follows this table mapping chars to
+// rune-codepoints:
+//   char  | code point | decoded to
+//  --------------------------------
+//   [0,9] |  [48,57]   |  [0,9]
+//   [A,F] |  [65,70]   | [10,15]
+//   [a,f] |  [97,102]  | [10,15]
 func DecodeInt(hex byte) (int, error) {
-	// Char-to-rune table:
-	//
-	// | char    code point
-	// +-------------------
-	// | [0,9] = [48,57]
-	// | [A,F] = [65,70]
-	// | [a,f] = [97,102]
-
 	runePoint := rune(hex)
 	val := decodeInt(runePoint)
 	if val == -1 {
